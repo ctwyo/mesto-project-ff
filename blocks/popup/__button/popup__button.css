@@ -15,11 +15,12 @@
 }
 
 .popup__button:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgb(0 0 0 / 0.8);
   cursor: pointer;
 }
 
 @media screen and (max-width: 568px) {
+
   .popup__button {
     font-size: 14px;
     line-height: 17px;
