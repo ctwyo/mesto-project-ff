@@ -1,6 +1,3 @@
-import { openPopup } from './modal';
-import { imagePopup } from '../index';
-
 const arhiz = new URL(
   'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
 );
@@ -46,41 +43,3 @@ export const initialCards = [
     link: baikal,
   },
 ];
-
-function createCard(card, handleDeleteCard, handleClickImage, handleLikeCard) {
-  const template = document.querySelector('#card-template').content;
-  const cardElement = template.querySelector('.card').cloneNode(true);
-  const deleteButton = cardElement.querySelector('.card__delete-button');
-  const likeButton = cardElement.querySelector('.card__like-button');
-  const cardImage = cardElement.querySelector('.card__image');
-  const cardTitle = cardElement.querySelector('.card__title');
-
-  deleteButton.addEventListener('click', handleDeleteCard);
-  cardImage.addEventListener('click', handleClickImage);
-  likeButton.addEventListener('click', handleLikeCard);
-
-  cardImage.src = card.link;
-  cardImage.alt = card.name;
-  cardTitle.textContent = card.name;
-
-  return cardElement;
-}
-
-function handleDeleteCard(event) {
-  event.target.closest('.card').remove();
-}
-
-function handleLikeCard(evt) {
-  evt.target.classList.toggle('card__like-button_is-active');
-}
-
-function handleClickImage(event) {
-  const popupImage = document.querySelector('.popup__image');
-  const popupCaption = document.querySelector('.popup__caption');
-  openPopup(imagePopup);
-  popupImage.src = event.target.src;
-  popupImage.alt = event.target.alt;
-  popupCaption.textContent = event.target.alt;
-}
-
-export { createCard, handleDeleteCard, handleLikeCard, handleClickImage };

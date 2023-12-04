@@ -4,17 +4,17 @@ import {
   createCard,
   handleDeleteCard,
   handleLikeCard,
-  handleClickImage,
-} from './components/cards';
-import { openPopup, closePopup } from './components/modal';
+} from './components/card';
+import { openPopup, closePopup, closePopupByClick } from './components/modal';
+
 // @todo: Темплейт карточки
 const cardsContainer = document.querySelector('.places__list');
 const forms = document.querySelectorAll('form');
 
 //edit form
-const editForm = document.forms['edit-profile'];
-const title = editForm.elements.name;
-const description = editForm.elements.description;
+const editProfileForm = document.forms['edit-profile'];
+const title = editProfileForm.elements.name;
+const description = editProfileForm.elements.description;
 
 //add new card form
 const newCardForm = document.forms['new-place'];
@@ -31,16 +31,24 @@ const addNewCardButton = document.querySelector('.profile__add-button');
 const closeButtons = document.querySelectorAll('.popup__close');
 
 // popups
-
+const popups = document.querySelectorAll('.popup');
 const profileEditPopup = document.querySelector('.popup_type_edit');
 const newCardPopup = document.querySelector('.popup_type_new-card');
 const imagePopup = document.querySelector('.popup_type_image');
 
+//попап по клику на картинку
+function handleClickImage(event) {
+  const popupImage = document.querySelector('.popup__image');
+  const popupCaption = document.querySelector('.popup__caption');
+  openPopup(imagePopup);
+  popupImage.src = event.target.src;
+  popupImage.alt = event.target.alt;
+  popupCaption.textContent = event.target.alt;
+}
+
 //сбросить форму
-function resetForm() {
-  forms.forEach((form) => {
-    form.reset();
-  });
+function resetForm(form) {
+  form.reset()
 }
 
 // submit PROFILE
@@ -48,9 +56,7 @@ function editProfileFormSubmit(evt) {
   evt.preventDefault();
   nameInput.textContent = title.value;
   jobInput.textContent = description.value;
-  const popup = evt.target.closest('.popup');
-  closePopup(popup);
-  editForm.reset();
+  closePopup(profileEditPopup);
 }
 
 //submit NEW CARD
@@ -63,39 +69,39 @@ function newCardFormSubmit(evt) {
   cardsContainer.prepend(
     createCard(card, handleDeleteCard, handleClickImage, handleLikeCard)
   );
-  const popup = evt.target.closest('.popup');
-  closePopup(popup);
+  closePopup(newCardPopup);
 }
 
-//слушатели закрытия popup по overlay
-// popups.forEach((popup) => {
-//   popup.addEventListener('click', (evt) => {
-//     if (evt.target === popup) {
-//       closePopup(popup)
-//     }
-//   })
-// })
+// слушатели закрытия popup по overlay
+popups.forEach((popup) => {
+  popup.addEventListener('click', closePopupByClick);
+})
 
 //слушатели закрытия попап по крестику
 closeButtons.forEach((button) => {
   button.addEventListener('click', (evt) => {
-    const popup = evt.target.closest('.popup');
-    closePopup(popup);
+    // const popup = evt.target.closest('.popup');
+    // closePopup(popup);
+    popups.forEach((popup) => {
+      closePopup(popup)
+    })////////////////////////////////////////////////////как лучше, пройтись по всем попапам или оставить как было
   });
 });
 
 //Обработчики
 profileEditButton.addEventListener('click', () => {
+  editProfileForm.reset();
   openPopup(profileEditPopup);
   title.value = nameInput.textContent;
   description.value = jobInput.textContent;
 });
 
 addNewCardButton.addEventListener('click', () => {
+  newCardForm.reset();
   openPopup(newCardPopup);
 });
 
-editForm.addEventListener('submit', editProfileFormSubmit);
+editProfileForm.addEventListener('submit', editProfileFormSubmit);
 
 newCardForm.addEventListener('submit', newCardFormSubmit);
 
@@ -114,4 +120,4 @@ function renderCards(cards) {
 // @todo: Вывести карточки на страницу
 renderCards(initialCards);
 
-export { openPopup, resetForm, imagePopup };
+export { resetForm, handleClickImage };

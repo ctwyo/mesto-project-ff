@@ -1,7 +1,3 @@
-import { resetForm } from '../index';
-
-const popups = document.querySelectorAll('.popup');
-
 function openPopup(popup) {
   popup.classList.add('popup_is-opened');
   document.addEventListener('keydown', closePopupByEscape);
@@ -10,7 +6,6 @@ function openPopup(popup) {
 function closePopup(popup) {
   popup.classList.remove('popup_is-opened');
   document.removeEventListener('keydown', closePopupByEscape);
-  resetForm();
 }
 
 function closePopupByEscape(evt) {
@@ -19,20 +14,13 @@ function closePopupByEscape(evt) {
     if (openedPopup) {
       closePopup(openedPopup);
     }
-    resetForm();
   }
 }
 
-function closePopupByClick() {
-  popups.forEach((popup) => {
-    popup.addEventListener('click', (evt) => {
-      if (evt.target === popup) {
-        closePopup(popup);
-      }
-    });
-  });
+function closePopupByClick(evt) {
+  if (evt.target.classList.contains('popup_is-opened')) {
+    closePopup(evt.currentTarget)
+  }
 }
 
-closePopupByClick();
-
-export { openPopup, closePopup, closePopupByEscape };
+export { openPopup, closePopup, closePopupByEscape, closePopupByClick };
