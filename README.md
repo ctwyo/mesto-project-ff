@@ -1,3 +1,3 @@
 # Проектная работа Mesto
 
-## **[Ссылка](https://ctwyo.github.io/mesto-project-ff/)**
+## <a href="https://ctwyo.github.io/mesto-project-ff" target="_blank">Ссылка</a>
