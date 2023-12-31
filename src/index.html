@@ -43,21 +43,29 @@
           <button type="button" class="popup__close" aria-label="закрыть окно"></button>
           <h3 class="popup__title">Редактировать профиль</h3>
           <form class="popup__form" name="edit-profile">
-            <input
-              type="text"
-              name="name"
-              class="popup__input popup__input_type_name"
-              placeholder="Имя"
-              required
+              <input
+                type="text"
+                name="name"
+                class="popup__input popup__input_type_name"
+                placeholder="Имя"
+                required
+                minlength="2"
+                maxlength="40"
+                id="name"
+              />
+              <span class="popup__input-error name-error"></span>
+              <input
+                type="text"
+                name="description"
+                class="popup__input popup__input_type_description"
+                placeholder="Занятие"
+                required
+                minlength="2"
+                maxlength="200"
+                id="text"
             />
-            <input
-              type="text"
-              name="description"
-              class="popup__input popup__input_type_description"
-              placeholder="Занятие"
-              required
-            />
-            <button type="submit" class="button popup__button">
+              <span class="popup__input-error text-error"></span>
+            <button type="submit" class="button popup__button popup__button_disabled">
               Сохранить
             </button>
           </form>
@@ -68,20 +76,26 @@
           <button type="button" class="popup__close" aria-label="закрыть окно"></button>
           <h3 class="popup__title">Новое место</h3>
           <form class="popup__form" name="new-place">
-            <input
-              type="text"
-              name="place-name"
-              class="popup__input popup__input_type_card-name"
-              placeholder="Название"
-              required
-            />
-            <input
-              type="url"
-              name="link"
-              class="popup__input popup__input_type_url"
-              placeholder="Ссылка на картинку"
-              required
-            />
+              <input
+                type="text"
+                name="place-name"
+                class="popup__input popup__input_type_card-name"
+                placeholder="Название"
+                required
+                minlength="2"
+                maxlength="30"
+                id="place-name"
+                />
+                <span class="popup__input-error place-name-error"></span>
+                <input
+                type="url"
+                name="link"
+                class="popup__input popup__input_type_url"
+                placeholder="Ссылка на картинку"
+                required
+                id="link"
+              />
+              <span class="popup__input-error link-error"></span>
             <button type="submit" class="button popup__button">
               Сохранить
             </button>
@@ -97,13 +111,35 @@
       </div>
     </div>
 
+    <div class="popup popup__type_avatar popup_is-animated">
+      <div class="popup__content">
+        <button type="button" class="popup__close" aria-label="закрыть окно"></button>
+        <h3 class="popup__title">Обновить аватар</h3>
+        <form name="new-avatar" class="popup__form">
+          <input
+            type="url"
+            name="avatar"
+            class="popup__input popup__input_type_avatar"
+            placeholder="Ссылка на картинку"
+            required
+            id="avatar"
+          />
+          <span class="popup__input-error avatar-error"></span>
+          <button class="button popup__button" type="submit">Сохранить</button>
+        </form>
+      </div>
+    </div>
+
     <template id="card-template">
       <li class="places__item card">
         <img class="card__image" src="" alt="" />
         <button type="button" class="card__delete-button" aria-label="удалить карточку"></button>
         <div class="card__description">
           <h2 class="card__title"></h2>
-          <button type="button" class="card__like-button" aria-label="лайк"></button>
+          <div class="card__like-container">
+            <button type="button" class="card__like-button" aria-label="лайк"></button>
+            <p class="card__likes"></p>
+          </div>
         </div>
       </li>
     </template>

@@ -9,6 +9,25 @@
   margin: 0 29px 0 0;
 }
 
+.profile__image::before {
+  content: '';
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  background-color: rgba(0,0,0,.8);
+  background-image: url(../../../images/pen.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  display: block;
+}
+
+.profile__image:hover::before {
+  opacity: 1;
+}
+
 @media screen and (max-width: 740px) {
 
   .profile__image {
