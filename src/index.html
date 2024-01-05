@@ -42,7 +42,7 @@
         <div class="popup__content">
           <button type="button" class="popup__close" aria-label="закрыть окно"></button>
           <h3 class="popup__title">Редактировать профиль</h3>
-          <form class="popup__form" name="edit-profile">
+          <form class="popup__form" name="edit-profile" novalidate>
               <input
                 type="text"
                 name="name"
@@ -52,6 +52,7 @@
                 minlength="2"
                 maxlength="40"
                 id="name"
+                pattern="^[a-zA-Zа-яА-ЯёЁ\-\s]+$"
               />
               <span class="popup__input-error name-error"></span>
               <input
@@ -63,6 +64,7 @@
                 minlength="2"
                 maxlength="200"
                 id="text"
+                pattern="^[a-zA-Zа-яА-ЯёЁ\-\s]+$"
             />
               <span class="popup__input-error text-error"></span>
             <button type="submit" class="button popup__button popup__button_disabled">
@@ -75,7 +77,7 @@
         <div class="popup__content">
           <button type="button" class="popup__close" aria-label="закрыть окно"></button>
           <h3 class="popup__title">Новое место</h3>
-          <form class="popup__form" name="new-place">
+          <form class="popup__form" name="new-place" novalidate>
               <input
                 type="text"
                 name="place-name"
@@ -85,6 +87,7 @@
                 minlength="2"
                 maxlength="30"
                 id="place-name"
+                pattern="^[a-zA-Zа-яА-ЯёЁ\-\s]+$"
                 />
                 <span class="popup__input-error place-name-error"></span>
                 <input
@@ -115,7 +118,7 @@
       <div class="popup__content">
         <button type="button" class="popup__close" aria-label="закрыть окно"></button>
         <h3 class="popup__title">Обновить аватар</h3>
-        <form name="new-avatar" class="popup__form">
+        <form name="new-avatar" class="popup__form" novalidate>
           <input
             type="url"
             name="avatar"

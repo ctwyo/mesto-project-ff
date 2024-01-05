@@ -23,6 +23,12 @@ function hideInputError(formElement, inputElement, validationConfig) {
 }
 
 function checkInputValidity(formElement, inputElement, validationConfig) {
+  if (inputElement.validity.patternMismatch) {
+    inputElement.setCustomValidity('Разрешены только латинские и кириллические буквы, знаки дефиса и пробелы.');
+  } else {
+    inputElement.setCustomValidity('');
+  }
+
   if (!inputElement.validity.valid) {
     showInputError(formElement, inputElement, inputElement.validationMessage, validationConfig);
   } else {
