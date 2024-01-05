@@ -1,16 +1,12 @@
 import './pages/index.css';
-// import { initialCards } from './components/cards';
 import {
   createCard,
-  // handleDeleteCard,
   handleLikeCard,
 } from './components/card';
 import { openPopup, closePopup, closePopupByClick } from './components/modal';
 import { enableValidation, clearValidation } from './components/validation';
 import {
-  // getInitialCards,
   getInitialInfo,
-  // getUserInfo,
   updateProfile,
   postNewCard,
   deleteCard,
@@ -19,7 +15,6 @@ import {
 
 // @todo: Темплейт карточки
 const cardsContainer = document.querySelector('.places__list');
-const forms = document.querySelectorAll('form');
 
 //edit form
 const editProfileForm = document.forms['edit-profile'];
@@ -55,8 +50,6 @@ const newCardPopup = document.querySelector('.popup_type_new-card');
 const imagePopup = document.querySelector('.popup_type_image');
 const avatarPopup = document.querySelector('.popup__type_avatar');
 
-//get cards from server
-
 const validationConfig = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
@@ -81,7 +74,7 @@ function handleClickImage(event) {
 // submit PROFILE
 function editProfileFormSubmit(evt) {
   evt.preventDefault();
-  saving(true, editProfileSubmitButton);
+  loadingIndicator(true, editProfileSubmitButton);
   updateProfile({
     name: editProfileForm.name.value,
     about: editProfileForm.description.value
@@ -92,14 +85,14 @@ function editProfileFormSubmit(evt) {
     })
     .catch((err) => console.log(err))
     .finally(() => {
-      saving(false, editProfileSubmitButton);
+      loadingIndicator(false, editProfileSubmitButton);
     })
 }
 
 //submit NEW CARD
 function newCardFormSubmit(evt) {
   evt.preventDefault();
-  saving(true, newCardSubmitButton)
+  loadingIndicator(true, newCardSubmitButton)
   const card = {
     name: placeName.value,
     link: link.value,
@@ -114,13 +107,13 @@ function newCardFormSubmit(evt) {
     })
     .catch((err) => console.log('Error: ',err))
     .finally(() => {
-      saving(false, newCardSubmitButton)
+      loadingIndicator(false, newCardSubmitButton)
     })
 }
 
 function avatarFormSubmit(evt) {
   evt.preventDefault();
-  saving(true, avatarSubmitButton)
+  loadingIndicator(true, avatarSubmitButton)
   const link = avatarLink.value;
   updateAvatar(link)
     .then((res) => {
@@ -129,7 +122,7 @@ function avatarFormSubmit(evt) {
     })
     .catch((err) => console.log('Error: ', err))
     .finally(() => {
-      saving(false, avatarSubmitButton)
+      loadingIndicator(false, avatarSubmitButton)
     })
 }
 
@@ -203,7 +196,7 @@ function fillUserInfo(userInfo) {
   profileAvatar.style.backgroundImage = `url(${userInfo.avatar})`;
 }
 
-function saving(loading, button) {
+function loadingIndicator(loading, button) {
   if (loading) {
     button.textContent = 'Сохранение...';
   } else {

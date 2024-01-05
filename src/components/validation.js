@@ -22,7 +22,7 @@ function hideInputError(formElement, inputElement, validationConfig) {
   errorElement.classList.remove(validationConfig.errorClass);
 }
 
-function checkInputValidity(formElement, inputElement, validationConfig) {
+function isValid(formElement, inputElement, validationConfig) {
   if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity('Разрешены только латинские и кириллические буквы, знаки дефиса и пробелы.');
   } else {
@@ -42,7 +42,7 @@ function setEventListeners(formElement, validationConfig) {
   toggleButtonState(inputList, buttonElement, validationConfig);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', () => {
-      checkInputValidity(formElement, inputElement, validationConfig);
+      isValid(formElement, inputElement, validationConfig);
       toggleButtonState(inputList, buttonElement, validationConfig);
     })
   })

@@ -1,5 +1,3 @@
-import { renderCards } from "../index"
-
 const config = {
   baseUrl: 'https://nomoreparties.co/v1/wff-cohort-4',
   headers: {
@@ -8,7 +6,7 @@ const config = {
   }
 }
 
-function getResponseData(res) {
+function getResponse(res) {
   return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 }
 
@@ -18,7 +16,7 @@ function getInitialCards() {
     authorization: config.headers.authorization
   }
   })
-  .then((res) => getResponseData(res));
+  .then((res) => getResponse(res));
 }
 
 function getUserInfo() {
@@ -27,7 +25,7 @@ function getUserInfo() {
       authorization: config.headers.authorization
     }
   })
-  .then((res) => getResponseData(res))
+  .then((res) => getResponse(res))
 
 }
 
@@ -43,7 +41,7 @@ function updateProfile(userData) {
       about: userData.about,
     })
   })
-  .then((res) => getResponseData(res))
+  .then((res) => getResponse(res))
 }
 
 function postNewCard(card) {
@@ -58,7 +56,7 @@ function postNewCard(card) {
       link: card.link,
     })
   })
-  .then((res) => getResponseData(res))
+  .then((res) => getResponse(res))
 }
 
 function deleteCard(cardId) {
@@ -69,7 +67,7 @@ function deleteCard(cardId) {
       'Content-Type': 'application/json'
     },
   })
-  .then((res) => getResponseData(res));
+  .then((res) => getResponse(res));
 }
 
 function getInitialInfo() {
@@ -84,7 +82,7 @@ function putLikeCard(cardId) {
       'Content-Type': 'application/json'
     },
   })
-  .then((res) => getResponseData(res));
+  .then((res) => getResponse(res));
 }
 
 function deleteLikeCard(cardId) {
@@ -95,7 +93,7 @@ function deleteLikeCard(cardId) {
       'Content-Type': 'application/json'
     },
   })
-  .then((res) => getResponseData(res));
+  .then((res) => getResponse(res));
 }
 
 function updateAvatar(link) {
@@ -109,7 +107,7 @@ function updateAvatar(link) {
       avatar: link,
     })
   })
-  .then((res) => getResponseData(res))
+  .then((res) => getResponse(res))
 }
 
 export { getInitialCards, getInitialInfo, getUserInfo, updateProfile, postNewCard, deleteCard, putLikeCard, deleteLikeCard, updateAvatar }

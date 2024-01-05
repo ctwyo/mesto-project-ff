@@ -1,4 +1,3 @@
-import { renderCards } from "../index";
 import { putLikeCard, deleteLikeCard } from "./api";
 
 function createCard(card, userId, handleDeleteCard, handleClickImage, handleLikeCard) {
@@ -10,12 +9,18 @@ function createCard(card, userId, handleDeleteCard, handleClickImage, handleLike
   const cardTitle = cardElement.querySelector('.card__title');
   const cardLikes = cardElement.querySelector('.card__likes');
   const cardId = card._id;
-  const currentLikes = card.likes.length;
 
   cardImage.addEventListener('click', handleClickImage);
   likeButton.addEventListener('click', (evt) => {
     handleLikeCard(card, evt, userId);
   });
+
+  // кто то попытался загрузить картинку через 'https://nomoreparties.co/v1/wff-cohort-4/users/me'
+  //бесит что не картинки
+  const errorCardLink = 'https://nomoreparties.co/v1/wff-cohort-4/users/me'
+  if (card.link === errorCardLink) {
+    card.link = 'https://proprikol.ru/wp-content/uploads/2020/11/kartinki-oshibki-31.jpg'
+  }
 
   cardImage.src = card.link;
   cardImage.alt = card.name;
