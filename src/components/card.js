@@ -1,6 +1,4 @@
-import { putLikeCard, deleteLikeCard } from "./api";
-
-function createCard(card, userId, handleDeleteCard, handleClickImage, handleLikeCard) {
+export function createCard(card, userId, handleDeleteCard, handleClickImage, handleLikeCard) {
   const template = document.querySelector('#card-template').content;
   const cardElement = template.querySelector('.card').cloneNode(true);
   const deleteButton = cardElement.querySelector('.card__delete-button');
@@ -8,11 +6,12 @@ function createCard(card, userId, handleDeleteCard, handleClickImage, handleLike
   const cardImage = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');
   const cardLikes = cardElement.querySelector('.card__likes');
+  const likesText = cardElement.querySelector('.card__likes');
   const cardId = card._id;
 
   cardImage.addEventListener('click', handleClickImage);
-  likeButton.addEventListener('click', (evt) => {
-    handleLikeCard(card, evt, userId);
+  likeButton.addEventListener('click', () => {
+    handleLikeCard(checkLikeStatus(userId, card), cardId, card, likesText, likeButton);
   });
 
   // кто то попытался загрузить картинку через 'https://nomoreparties.co/v1/wff-cohort-4/users/me'
@@ -27,9 +26,10 @@ function createCard(card, userId, handleDeleteCard, handleClickImage, handleLike
   cardTitle.textContent = card.name;
   cardLikes.textContent = card.likes.length;
 
-  const isLiked = card.likes.some((like) => like._id === userId)
-  if (isLiked) {
+  if (checkLikeStatus(userId, card)) {
     likeButton.classList.add('card__like-button_is-active');
+  } else {
+    likeButton.classList.remove('card__like-button_is-active');
   }
 
   if (card.owner._id != userId) {
@@ -43,29 +43,16 @@ function createCard(card, userId, handleDeleteCard, handleClickImage, handleLike
   return cardElement;
 }
 
-function handleLikeCard(card, evt, userId) {
-  const isLiked = card.likes.some((like) => like._id === userId)
-  const button = evt.target.closest('.card__like-button');
-  const cardElement = evt.target.closest('.card');
-  const likes = cardElement.querySelector('.card__likes');
-  if (isLiked) {
-    deleteLikeCard(card._id)
-      .then((updatedCard) =>{
-        button.classList.toggle('card__like-button_is-active');
-        likes.textContent = updatedCard.likes.length
-        card.likes = updatedCard.likes;
-      })
-      .catch((err) => console.log('Error: ', err))
+const updateLike = (button) => {
+  button.classList.toggle('card__like-button_is-active');
+};
 
-  } else {
-    putLikeCard(card._id)
-      .then((updatedCard) => {
-        button.classList.toggle('card__like-button_is-active');
-        likes.textContent = updatedCard.likes.length
-        card.likes = updatedCard.likes;
-      })
-      .catch((err) => console.log('Error: ', err))
-  }
+export function changeLike(card, newLikes, likesText, likeButton) {
+  likesText.textContent = newLikes.length
+  card.likes = newLikes;
+  updateLike(likeButton)
 }
 
-export { createCard, handleLikeCard };
+function checkLikeStatus(userId, card) {
+  return card.likes.some((like) => like._id === userId);
+}

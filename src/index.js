@@ -1,7 +1,7 @@
 import './pages/index.css';
 import {
   createCard,
-  handleLikeCard,
+  changeLike
 } from './components/card';
 import { openPopup, closePopup, closePopupByClick } from './components/modal';
 import { enableValidation, clearValidation } from './components/validation';
@@ -10,7 +10,9 @@ import {
   updateProfile,
   postNewCard,
   deleteCard,
-  updateAvatar
+  updateAvatar,
+  putLikeCard,
+  deleteLikeCard
 } from './components/api'
 
 // @todo: Темплейт карточки
@@ -182,6 +184,20 @@ export function renderCards(cards, userId) {
     );
     cardsContainer.append(newCard);
   });
+}
+
+export function handleLikeCard(status, cardId, card, likesText, likeButton) {
+  return status
+    ? deleteLikeCard(cardId)
+      .then((res) => {
+        changeLike(card, res.likes, likesText, likeButton)
+      })
+      .catch(err => console.log('Error when delete like',err))
+    : putLikeCard(cardId)
+      .then((res) => {
+        changeLike(card, res.likes, likesText, likeButton)
+      })
+      .catch(err => console.log('Error when put like',err))
 }
 
 function handleDeleteCard(cardId, evt) {
