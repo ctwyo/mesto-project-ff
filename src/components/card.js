@@ -9,17 +9,14 @@ export function createCard(card, userId, handleDeleteCard, handleClickImage, han
   const likesText = cardElement.querySelector('.card__likes');
   const cardId = card._id;
 
-  cardImage.addEventListener('click', handleClickImage);
+  // даём id карточке
+  cardElement.id = card._id
+
+  cardImage.addEventListener('click', () => handleClickImage(card.name, card.link))
+
   likeButton.addEventListener('click', () => {
     handleLikeCard(checkLikeStatus(userId, card), cardId, card, likesText, likeButton);
   });
-
-  // кто то попытался загрузить картинку через 'https://nomoreparties.co/v1/wff-cohort-4/users/me'
-  //бесит что не картинки
-  const errorCardLink = 'https://nomoreparties.co/v1/wff-cohort-4/users/me'
-  if (card.link === errorCardLink) {
-    card.link = 'https://proprikol.ru/wp-content/uploads/2020/11/kartinki-oshibki-31.jpg'
-  }
 
   cardImage.src = card.link;
   cardImage.alt = card.name;
@@ -35,8 +32,8 @@ export function createCard(card, userId, handleDeleteCard, handleClickImage, han
   if (card.owner._id != userId) {
     deleteButton.remove()
   } else {
-    deleteButton.addEventListener('click', (evt) => {
-      handleDeleteCard(cardId, evt);
+    deleteButton.addEventListener('click', () => {
+      handleDeleteCard(card);
     });
   }
 
@@ -46,6 +43,10 @@ export function createCard(card, userId, handleDeleteCard, handleClickImage, han
 const updateLike = (button) => {
   button.classList.toggle('card__like-button_is-active');
 };
+
+export function deleteCardFromDOM(card) {
+  card.remove()
+}
 
 export function changeLike(card, newLikes, likesText, likeButton) {
   likesText.textContent = newLikes.length
