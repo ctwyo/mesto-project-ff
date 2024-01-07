@@ -5,7 +5,6 @@ export function createCard(card, userId, handleDeleteCard, handleClickImage, han
   const likeButton = cardElement.querySelector('.card__like-button');
   const cardImage = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');
-  const cardLikes = cardElement.querySelector('.card__likes');
   const likesText = cardElement.querySelector('.card__likes');
   const cardId = card._id;
 
@@ -21,19 +20,17 @@ export function createCard(card, userId, handleDeleteCard, handleClickImage, han
   cardImage.src = card.link;
   cardImage.alt = card.name;
   cardTitle.textContent = card.name;
-  cardLikes.textContent = card.likes.length;
+  likesText.textContent = card.likes.length;
 
   if (checkLikeStatus(userId, card)) {
-    likeButton.classList.add('card__like-button_is-active');
-  } else {
-    likeButton.classList.remove('card__like-button_is-active');
+    updateLike(likeButton)
   }
 
   if (card.owner._id != userId) {
     deleteButton.remove()
   } else {
     deleteButton.addEventListener('click', () => {
-      handleDeleteCard(card);
+      handleDeleteCard(cardId, cardElement);
     });
   }
 

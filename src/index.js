@@ -23,20 +23,20 @@ const popupProfile = document.querySelector('.popup_type_edit');
 const popupProfileForm = document.forms['edit-profile'];
 const popupProfileName = popupProfileForm.elements.name;
 const popupProfileDescription = popupProfileForm.elements.description;
-const editProfileSubmitButton = popupProfileForm.querySelector('button[type="submit"]');
+const buttonSubmitProfileForm = popupProfileForm.querySelector('button[type="submit"]');
 
 //add new card popup
 const popupNewCard = document.querySelector('.popup_type_new-card');
 const popupNewCardForm = document.forms['new-place'];
 const popupNewCardName = popupNewCardForm.elements['place-name'];
 const popupNewCardLink = popupNewCardForm.elements.link;
-const newCardSubmitButton = popupNewCardForm.querySelector('button[type="submit"]');
+const buttonSubmitNewCardForm = popupNewCardForm.querySelector('button[type="submit"]');
 
 //avatar popup
 const popupAvatar = document.querySelector('.popup__type_avatar');
 const popupAvatarForm = document.forms['new-avatar'];
 const popupAvatarLink = popupAvatarForm.elements['avatar'];
-const avatarSubmitButton = popupAvatarForm.querySelector('button[type="submit"]');
+const buttonSubmitAvatar = popupAvatarForm.querySelector('button[type="submit"]');
 
 //profile values
 const profileName = document.querySelector('.profile__title');
@@ -44,9 +44,9 @@ const profileDescription = document.querySelector('.profile__description');
 const profileAvatar = document.querySelector('.profile__image');
 
 //buttons
-const profileEditButton = document.querySelector('.profile__edit-button');
-const addNewCardButton = document.querySelector('.profile__add-button');
-const closeButtons = document.querySelectorAll('.popup__close');
+const buttonEditProfile = document.querySelector('.profile__edit-button');
+const buttonAddNewCard = document.querySelector('.profile__add-button');
+const buttonsClosePopup = document.querySelectorAll('.popup__close');
 
 // popups
 const popups = document.querySelectorAll('.popup');
@@ -63,8 +63,9 @@ const validationConfig = {
   submitButtonSelector: '.popup__button',
   inactiveButtonClass: 'popup__button_disabled',
   inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_visible'
+  errorClass: 'popup__input-error_visible',
 }
+
 //validation
 enableValidation(validationConfig)
 
@@ -77,9 +78,9 @@ function handleClickImage(name, link) {
 }
 
 // submit PROFILE
-function editProfileFormSubmit(evt) {
+function submitProfileForm(evt) {
   evt.preventDefault();
-  loadingIndicator(true, editProfileSubmitButton);
+  loadingIndicator(true, buttonSubmitProfileForm);
   updateProfile({
     name: popupProfileForm.name.value,
     about: popupProfileForm.description.value
@@ -90,14 +91,14 @@ function editProfileFormSubmit(evt) {
     })
     .catch((err) => console.log(err))
     .finally(() => {
-      loadingIndicator(false, editProfileSubmitButton);
+      loadingIndicator(false, buttonSubmitProfileForm);
     })
 }
 
 //submit NEW CARD
-function newCardFormSubmit(evt) {
+function submitNewCardForm(evt) {
   evt.preventDefault();
-  loadingIndicator(true, newCardSubmitButton)
+  loadingIndicator(true, buttonSubmitNewCardForm)
   const card = {
     name: popupNewCardName.value,
     link: popupNewCardLink.value,
@@ -112,13 +113,13 @@ function newCardFormSubmit(evt) {
     })
     .catch((err) => console.log('Error: ',err))
     .finally(() => {
-      loadingIndicator(false, newCardSubmitButton)
+      loadingIndicator(false, buttonSubmitNewCardForm)
     })
 }
 
-function avatarFormSubmit(evt) {
+function submitAvatarForm(evt) {
   evt.preventDefault();
-  loadingIndicator(true, avatarSubmitButton)
+  loadingIndicator(true, buttonSubmitAvatar)
   const link = popupAvatarLink.value;
   updateAvatar(link)
     .then((res) => {
@@ -127,7 +128,7 @@ function avatarFormSubmit(evt) {
     })
     .catch((err) => console.log('Error: ', err))
     .finally(() => {
-      loadingIndicator(false, avatarSubmitButton)
+      loadingIndicator(false, buttonSubmitAvatar)
     })
 }
 
@@ -137,7 +138,7 @@ popups.forEach((popup) => {
 })
 
 //слушатели закрытия попап по крестику
-closeButtons.forEach((button) => {
+buttonsClosePopup.forEach((button) => {
   button.addEventListener('click', (evt) => {
     popups.forEach((popup) => {
       closePopup(popup)
@@ -150,7 +151,7 @@ profileAvatar.addEventListener('click', () => {
 })
 
 //Обработчики на кнопки открытия попапов
-profileEditButton.addEventListener('click', () => {
+buttonEditProfile.addEventListener('click', () => {
   clearValidation(popupProfileForm, validationConfig);
   popupProfileForm.reset();
   openPopup(popupProfile);
@@ -158,7 +159,7 @@ profileEditButton.addEventListener('click', () => {
   popupProfileDescription.value = profileDescription.textContent;
 });
 
-addNewCardButton.addEventListener('click', () => {
+buttonAddNewCard.addEventListener('click', () => {
   popupNewCardForm.reset();
   clearValidation(popupNewCardForm, validationConfig);
   openPopup(popupNewCard);
@@ -169,11 +170,11 @@ profileAvatar.addEventListener('click', () => {
   clearValidation(popupAvatarForm, validationConfig);
 })
 
-popupProfileForm.addEventListener('submit', editProfileFormSubmit);
+popupProfileForm.addEventListener('submit', submitProfileForm);
 
-popupNewCardForm.addEventListener('submit', newCardFormSubmit);
+popupNewCardForm.addEventListener('submit', submitNewCardForm);
 
-popupAvatarForm.addEventListener('submit', avatarFormSubmit);
+popupAvatarForm.addEventListener('submit', submitAvatarForm);
 
 // @todo: Вывести карточки на страницу
 export function renderCards(cards, userId) {
@@ -203,10 +204,9 @@ export function handleLikeCard(status, cardId, card, likesText, likeButton) {
       .catch(err => console.log('Error when put like',err))
 }
 
-function handleDeleteCard(card) {
-  deleteCard(card._id)
+function handleDeleteCard(cardId, cardElement) {
+  deleteCard(cardId)
     .then(() => {
-      const cardElement = document.getElementById(card._id);
       deleteCardFromDOM(cardElement)
     })
     .catch(err => console.log('Error while delete card', err))
